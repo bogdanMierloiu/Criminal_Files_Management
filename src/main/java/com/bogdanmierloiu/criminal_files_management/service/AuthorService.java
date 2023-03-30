@@ -8,6 +8,7 @@ import com.bogdanmierloiu.criminal_files_management.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -26,21 +27,31 @@ public class AuthorService implements Crud<AuthorResponse, AuthorRequest> {
 
     @Override
     public List<AuthorResponse> getAll() {
-        return null;
+        return authorMapper.map(authorRepository.findAll());
     }
 
     @Override
     public AuthorResponse findById(Long id) {
-        return null;
+        return authorMapper.map(authorRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("The author with " + id + " not found")));
     }
 
     @Override
     public AuthorResponse update(AuthorRequest request) {
-        return null;
+        Author authorToUpdate = authorRepository.findById(request.getId()).orElseThrow(
+                () -> new NotFoundException("The author with id " + request.getId() + " not found"));
+        authorToUpdate.setFirstName(request.getFirstName() != null ? request.getFirstName() : authorToUpdate.getFirstName());
+        authorToUpdate.setLastName(request.getLastName() != null ? request.getLastName() : authorToUpdate.getLastName());
+        authorToUpdate.setMiddleName(request.getMiddleName() != null ? request.getMiddleName() : authorToUpdate.getMiddleName());
+        authorToUpdate.setPersonalCode(request.getPersonalCode() != null ? request.getPersonalCode() : authorToUpdate.getPersonalCode());
+        return authorMapper.map(authorToUpdate);
     }
 
     @Override
     public void delete(Long id) {
-
+        Author authorToDelete = authorRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("The author with id " + id + " not found!")
+        );
+        authorRepository.delete(authorToDelete);
     }
 }
