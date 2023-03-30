@@ -22,7 +22,7 @@ public class AuthorService implements Crud<Author> {
 
     @Override
     public List<Author> getAll() {
-        return null;
+        return authorRepository.findAll();
     }
 
     @Override

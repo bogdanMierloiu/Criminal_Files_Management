@@ -1,7 +1,11 @@
 package com.bogdanmierloiu.criminal_files_management.service;
 
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileRequest;
+import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
+import com.bogdanmierloiu.criminal_files_management.entity.Author;
 import com.bogdanmierloiu.criminal_files_management.entity.CriminalFile;
+import com.bogdanmierloiu.criminal_files_management.mapper.CriminalFileMapper;
+import com.bogdanmierloiu.criminal_files_management.repository.AuthorRepository;
 import com.bogdanmierloiu.criminal_files_management.repository.CrimeTypeRepository;
 import com.bogdanmierloiu.criminal_files_management.repository.CriminalFileRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,15 +13,16 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,16 +31,25 @@ import java.util.List;
 public class CriminalFileService implements Crud<com.bogdanmierloiu.criminal_files_management.entity.CriminalFile> {
     private final CriminalFileRepository criminalFileRepository;
     private final CrimeTypeRepository crimeTypeRepository;
+    private final AuthorRepository authorRepository;
+    private final CriminalFileMapper criminalFileMapper;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    public CriminalFile addCriminalFile(CriminalFileRequest request) {
+    public CriminalFileResponse addCriminalFile(CriminalFileRequest request) {
         CriminalFile criminalFileToSave = new CriminalFile();
         criminalFileToSave.setRegistrationNumberPS(request.getRegistrationNumberPS());
         criminalFileToSave.setRegistrationDate(request.getRegistrationDate());
         criminalFileToSave.setRegistrationNumberProsecutor(request.getRegistrationNumberProsecutor());
         criminalFileToSave.setLegalQualification(request.getLegalQualification());
         criminalFileToSave.setCrimeType(crimeTypeRepository.findById(request.getCrimeTypeId()).orElseThrow());
-        return criminalFileRepository.save(criminalFileToSave);
+        List<Author> authorList = new ArrayList<>();
+        for (var i : request.getAuthorsId()) {
+            Author author = authorRepository.findById(i).orElseThrow(
+                    () -> new NotFoundException("The author with id " + i + " not found!"));
+            authorList.add(author);
+        }
+        criminalFileToSave.setAuthors(authorList);
+        return criminalFileMapper.map(criminalFileRepository.save(criminalFileToSave));
     }
 
     @Override
