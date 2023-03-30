@@ -1,5 +1,7 @@
 package com.bogdanmierloiu.criminal_files_management.controller;
 
+import com.bogdanmierloiu.criminal_files_management.dto.CrimeTypeRequest;
+import com.bogdanmierloiu.criminal_files_management.dto.CrimeTypeResponse;
 import com.bogdanmierloiu.criminal_files_management.entity.Author;
 import com.bogdanmierloiu.criminal_files_management.entity.CrimeType;
 import com.bogdanmierloiu.criminal_files_management.service.CrimeTypeService;
@@ -18,7 +20,7 @@ public class CrimeTypeController {
     private final CrimeTypeService crimeTypeService;
 
     @PostMapping
-    public ResponseEntity<CrimeType> add(@RequestBody CrimeType crimeType) {
+    public ResponseEntity<CrimeTypeResponse> add(@RequestBody CrimeTypeRequest crimeType) {
         return new ResponseEntity<>(crimeTypeService.add(crimeType), HttpStatus.OK);
     }
 }

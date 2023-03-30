@@ -27,17 +27,18 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CriminalFileService implements Crud<com.bogdanmierloiu.criminal_files_management.entity.CriminalFile> {
+public class CriminalFileService implements Crud<CriminalFileResponse, CriminalFileRequest> {
     private final CriminalFileRepository criminalFileRepository;
     private final CrimeTypeRepository crimeTypeRepository;
     private final AuthorRepository authorRepository;
     private final CriminalFileMapper criminalFileMapper;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    public CriminalFileResponse addCriminalFile(CriminalFileRequest request) {
+    @Override
+    public CriminalFileResponse add(CriminalFileRequest request) {
         CriminalFile criminalFileToSave = criminalFileMapper.map(request);
-        criminalFileToSave.setCrimeType(crimeTypeRepository.findById(request.getCrimeTypeId())
-                .orElseThrow(() -> new NotFoundException("The crime type with id " + request.getCrimeTypeId() + " not found!")));
+        criminalFileToSave.setCrimeType(request.getCrimeTypeId() != null ? crimeTypeRepository.findById(request.getCrimeTypeId())
+                .orElseThrow(() -> new NotFoundException("The crime type with id " + request.getCrimeTypeId() + " not found!")) : null);
         List<Author> authorList = new ArrayList<>();
         for (var i : request.getAuthorsId()) {
             Author author = authorRepository.findById(i)
@@ -50,22 +51,17 @@ public class CriminalFileService implements Crud<com.bogdanmierloiu.criminal_fil
     }
 
     @Override
-    public CriminalFile add(CriminalFile request) {
+    public List<CriminalFileResponse> getAll() {
         return null;
     }
 
     @Override
-    public List<CriminalFile> getAll() {
+    public CriminalFileResponse findById(Long id) {
         return null;
     }
 
     @Override
-    public CriminalFile findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public CriminalFile update(CriminalFile request) {
+    public CriminalFileResponse update(CriminalFileRequest request) {
         return null;
     }
 
@@ -73,6 +69,7 @@ public class CriminalFileService implements Crud<com.bogdanmierloiu.criminal_fil
     public void delete(Long id) {
 
     }
+
 
     public void importFiles() {
         String filePath = "C:\\Users\\Andreea\\Desktop\\EvidentaAN.docx";
@@ -102,5 +99,6 @@ public class CriminalFileService implements Crud<com.bogdanmierloiu.criminal_fil
             e.printStackTrace();
         }
     }
+
 
 }

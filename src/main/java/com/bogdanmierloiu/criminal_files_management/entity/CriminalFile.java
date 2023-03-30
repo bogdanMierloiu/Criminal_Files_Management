@@ -35,7 +35,6 @@ public class CriminalFile {
     @JoinColumn(name = "crime_type_id")
     @ToString.Exclude
     private CrimeType crimeType;
-
     @ManyToMany
     @JoinTable(name = "criminal_file_author",
             joinColumns = @JoinColumn(name = "criminal_file_id"),

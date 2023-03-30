@@ -1,5 +1,7 @@
 package com.bogdanmierloiu.criminal_files_management.controller;
 
+import com.bogdanmierloiu.criminal_files_management.dto.AuthorRequest;
+import com.bogdanmierloiu.criminal_files_management.dto.AuthorResponse;
 import com.bogdanmierloiu.criminal_files_management.entity.Author;
 import com.bogdanmierloiu.criminal_files_management.service.AuthorService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity<Author> add(@RequestBody Author author) {
+    public ResponseEntity<AuthorResponse> add(@RequestBody AuthorRequest author) {
         return new ResponseEntity<>(authorService.add(author), HttpStatus.OK);
     }
 }

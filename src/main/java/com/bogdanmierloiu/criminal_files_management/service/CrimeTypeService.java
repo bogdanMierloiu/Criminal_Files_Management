@@ -1,6 +1,8 @@
 package com.bogdanmierloiu.criminal_files_management.service;
 
-import com.bogdanmierloiu.criminal_files_management.entity.CrimeType;
+import com.bogdanmierloiu.criminal_files_management.dto.CrimeTypeRequest;
+import com.bogdanmierloiu.criminal_files_management.dto.CrimeTypeResponse;
+import com.bogdanmierloiu.criminal_files_management.mapper.CrimeTypeMapper;
 import com.bogdanmierloiu.criminal_files_management.repository.CrimeTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,27 +13,28 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CrimeTypeService implements Crud<CrimeType> {
+public class CrimeTypeService implements Crud<CrimeTypeResponse, CrimeTypeRequest> {
 
     private final CrimeTypeRepository crimeTypeRepository;
+    private final CrimeTypeMapper crimeTypeMapper;
 
     @Override
-    public CrimeType add(CrimeType request) {
-        return crimeTypeRepository.save(request);
+    public CrimeTypeResponse add(CrimeTypeRequest request) {
+        return crimeTypeMapper.map(crimeTypeRepository.save(crimeTypeMapper.map(request)));
     }
 
     @Override
-    public List<CrimeType> getAll() {
+    public List<CrimeTypeResponse> getAll() {
         return null;
     }
 
     @Override
-    public CrimeType findById(Long id) {
+    public CrimeTypeResponse findById(Long id) {
         return null;
     }
 
     @Override
-    public CrimeType update(CrimeType request) {
+    public CrimeTypeResponse update(CrimeTypeRequest request) {
         return null;
     }
 

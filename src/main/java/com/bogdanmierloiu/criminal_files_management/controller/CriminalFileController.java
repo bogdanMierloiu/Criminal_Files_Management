@@ -19,12 +19,12 @@ public class CriminalFileController {
 
     @PostMapping
     public ResponseEntity<CriminalFileResponse> add(@RequestBody CriminalFileRequest criminalFileRequest) {
-        return new ResponseEntity<>(criminalFileService.addCriminalFile(criminalFileRequest), HttpStatus.OK);
+        return new ResponseEntity<>(criminalFileService.add(criminalFileRequest), HttpStatus.OK);
     }
 
     @PostMapping("/import")
     public ResponseEntity<?> importFiles() {
         criminalFileService.importFiles();
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
