@@ -2,7 +2,6 @@ package com.bogdanmierloiu.criminal_files_management.controller;
 
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
-import com.bogdanmierloiu.criminal_files_management.entity.CriminalFile;
 import com.bogdanmierloiu.criminal_files_management.service.CriminalFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

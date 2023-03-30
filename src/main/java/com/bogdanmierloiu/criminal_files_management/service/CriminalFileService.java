@@ -13,7 +13,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
@@ -36,20 +35,18 @@ public class CriminalFileService implements Crud<com.bogdanmierloiu.criminal_fil
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public CriminalFileResponse addCriminalFile(CriminalFileRequest request) {
-        CriminalFile criminalFileToSave = new CriminalFile();
-        criminalFileToSave.setRegistrationNumberPS(request.getRegistrationNumberPS());
-        criminalFileToSave.setRegistrationDate(request.getRegistrationDate());
-        criminalFileToSave.setRegistrationNumberProsecutor(request.getRegistrationNumberProsecutor());
-        criminalFileToSave.setLegalQualification(request.getLegalQualification());
-        criminalFileToSave.setCrimeType(crimeTypeRepository.findById(request.getCrimeTypeId()).orElseThrow());
+        CriminalFile criminalFileToSave = criminalFileMapper.map(request);
+        criminalFileToSave.setCrimeType(crimeTypeRepository.findById(request.getCrimeTypeId())
+                .orElseThrow(() -> new NotFoundException("The crime type with id " + request.getCrimeTypeId() + " not found!")));
         List<Author> authorList = new ArrayList<>();
         for (var i : request.getAuthorsId()) {
-            Author author = authorRepository.findById(i).orElseThrow(
-                    () -> new NotFoundException("The author with id " + i + " not found!"));
+            Author author = authorRepository.findById(i)
+                    .orElseThrow(() -> new NotFoundException("The author with id " + i + " not found!"));
             authorList.add(author);
         }
         criminalFileToSave.setAuthors(authorList);
-        return criminalFileMapper.map(criminalFileRepository.save(criminalFileToSave));
+        CriminalFile savedCriminalFile = criminalFileRepository.save(criminalFileToSave);
+        return criminalFileMapper.mapWithDetails(savedCriminalFile);
     }
 
     @Override
