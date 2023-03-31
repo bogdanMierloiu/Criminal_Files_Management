@@ -25,7 +25,7 @@ public class CriminalFileRequest {
     @NotBlank
     private String registrationNumberProsecutor;
     private String legalQualification;
-    private Long crimeTypeId;
+    private Long crimeTypeId = null;
     private List<Long> authorsId = new ArrayList<>();
 
 

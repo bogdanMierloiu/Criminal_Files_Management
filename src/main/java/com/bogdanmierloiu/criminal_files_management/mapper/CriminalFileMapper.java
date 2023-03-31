@@ -11,6 +11,7 @@ import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -34,5 +35,21 @@ public interface CriminalFileMapper {
         response.setCrimeTypeResponse(map(criminalFile.getCrimeType()));
         response.setAuthorResponseList(mapAuthors(criminalFile.getAuthors()));
         return response;
+    }
+
+    @Named("mapListCriminalFileToResponseWithDetails")
+    default List<CriminalFileResponse> mapWithDetailsList(List<CriminalFile> criminalFileList) {
+        List<CriminalFileResponse> criminalFileResponses = map(criminalFileList);
+        for (var i : criminalFileResponses) {
+            for (var k : criminalFileList) {
+                i.setCrimeTypeResponse(map(k.getCrimeType()));
+            }
+        }
+        for (var i : criminalFileResponses) {
+            for (var k : criminalFileList) {
+                i.setAuthorResponseList(mapAuthors(k.getAuthors()));
+            }
+        }
+        return criminalFileResponses;
     }
 }

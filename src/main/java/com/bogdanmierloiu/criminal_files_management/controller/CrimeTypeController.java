@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/crime-type")
 @RequiredArgsConstructor
-public class CrimeTypeController {
+public class CrimeTypeController implements CrudController<CrimeTypeRequest, CrimeTypeResponse>{
     private final CrimeTypeService crimeTypeService;
 
     @PostMapping
@@ -33,7 +33,7 @@ public class CrimeTypeController {
 
     @PutMapping
     public ResponseEntity<CrimeTypeResponse> update(@RequestBody CrimeTypeRequest crimeTypeRequest) {
-        return new ResponseEntity<>(crimeTypeService.update(crimeTypeRequest), HttpStatus.OK);
+        return new ResponseEntity<>(crimeTypeService.update(crimeTypeRequest), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

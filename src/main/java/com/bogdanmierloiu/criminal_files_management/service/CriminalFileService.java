@@ -27,7 +27,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CriminalFileService implements Crud<CriminalFileResponse, CriminalFileRequest> {
+public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFileResponse> {
     private final CriminalFileRepository criminalFileRepository;
     private final CrimeTypeRepository crimeTypeRepository;
     private final AuthorRepository authorRepository;
@@ -37,37 +37,60 @@ public class CriminalFileService implements Crud<CriminalFileResponse, CriminalF
     @Override
     public CriminalFileResponse add(CriminalFileRequest request) {
         CriminalFile criminalFileToSave = criminalFileMapper.map(request);
-        criminalFileToSave.setCrimeType(request.getCrimeTypeId() != null ? crimeTypeRepository.findById(request.getCrimeTypeId())
-                .orElseThrow(() -> new NotFoundException("The crime type with id " + request.getCrimeTypeId() + " not found!")) : null);
-        List<Author> authorList = new ArrayList<>();
-        for (var i : request.getAuthorsId()) {
-            Author author = authorRepository.findById(i)
-                    .orElseThrow(() -> new NotFoundException("The author with id " + i + " not found!"));
-            authorList.add(author);
+        if (request.getCrimeTypeId() != null) {
+            criminalFileToSave.setCrimeType(crimeTypeRepository.findById(request.getCrimeTypeId())
+                    .orElseThrow(() -> new NotFoundException("The crime type with id " + request.getCrimeTypeId() + " not found!")));
         }
-        criminalFileToSave.setAuthors(authorList);
+        if (request.getAuthorsId() != null) {
+            criminalFileToSave.setAuthors(createAuthorList(request.getAuthorsId()));
+        }
         CriminalFile savedCriminalFile = criminalFileRepository.save(criminalFileToSave);
         return criminalFileMapper.mapWithDetails(savedCriminalFile);
     }
 
     @Override
     public List<CriminalFileResponse> getAll() {
-        return null;
+        return criminalFileMapper.mapWithDetailsList(criminalFileRepository.findAll());
     }
 
     @Override
     public CriminalFileResponse findById(Long id) {
-        return null;
+        return criminalFileMapper.mapWithDetails(criminalFileRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("The criminal file with id " + id + " not found")
+        ));
     }
 
     @Override
     public CriminalFileResponse update(CriminalFileRequest request) {
-        return null;
+        CriminalFile criminalFileToUpdate = criminalFileRepository.findById(request.getId()).orElseThrow(
+                () -> new NotFoundException("The criminal file with id " + request.getId() + " not found")
+        );
+        criminalFileToUpdate.setRegistrationNumberPS(request.getRegistrationNumberPS() != null ? request.getRegistrationNumberPS() : criminalFileToUpdate.getRegistrationNumberPS());
+        criminalFileToUpdate.setRegistrationDate(request.getRegistrationDate() != null ? request.getRegistrationDate() : criminalFileToUpdate.getRegistrationDate());
+        criminalFileToUpdate.setRegistrationNumberProsecutor(request.getRegistrationNumberProsecutor() != null ? request.getRegistrationNumberProsecutor() : criminalFileToUpdate.getRegistrationNumberProsecutor());
+        criminalFileToUpdate.setLegalQualification(request.getLegalQualification() != null ? request.getLegalQualification() : criminalFileToUpdate.getLegalQualification());
+        criminalFileToUpdate.setCrimeType(request.getCrimeTypeId() != null ? crimeTypeRepository.findById(request.getCrimeTypeId())
+                .orElseThrow(() -> new NotFoundException("The crime type with id " + request.getCrimeTypeId() + " not found!")) : criminalFileToUpdate.getCrimeType());
+        criminalFileToUpdate.setAuthors(request.getAuthorsId() != null ? createAuthorList(request.getAuthorsId()) : criminalFileToUpdate.getAuthors());
+
+        return criminalFileMapper.mapWithDetails(criminalFileRepository.save(criminalFileToUpdate));
     }
 
     @Override
     public void delete(Long id) {
+        CriminalFile criminalFileToDelete = criminalFileRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("The criminal file with id " + id + " not found")
+        );
+        criminalFileRepository.delete(criminalFileToDelete);
+    }
 
+    private List<Author> createAuthorList(List<Long> authorsId) {
+        List<Author> authorList = new ArrayList<>();
+        for (var i : authorsId) {
+            Author author = authorRepository.findById(i).orElseThrow(() -> new NotFoundException("The author with id " + i + " not found!"));
+            authorList.add(author);
+        }
+        return authorList;
     }
 
 

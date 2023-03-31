@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AuthorService implements Crud<AuthorResponse, AuthorRequest> {
+public class AuthorService implements Crud<AuthorRequest, AuthorResponse> {
 
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;

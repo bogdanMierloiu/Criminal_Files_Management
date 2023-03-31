@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CrimeTypeService implements Crud<CrimeTypeResponse, CrimeTypeRequest> {
+public class CrimeTypeService implements Crud<CrimeTypeRequest, CrimeTypeResponse> {
 
     private final CrimeTypeRepository crimeTypeRepository;
     private final CrimeTypeMapper crimeTypeMapper;

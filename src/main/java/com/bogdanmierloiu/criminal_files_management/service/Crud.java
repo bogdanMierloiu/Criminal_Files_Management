@@ -4,13 +4,13 @@ import java.util.List;
 
 public interface Crud<T,K> {
 
-    T add(K request);
+    K add(T request);
 
-    List<T> getAll();
+    List<K> getAll();
 
-    T findById(Long id);
+    K findById(Long id);
 
-    T update(K request);
+    K update(T request);
 
     void delete(Long id);
 }
