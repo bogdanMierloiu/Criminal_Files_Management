@@ -31,7 +31,7 @@ public class CriminalFile {
     private String registrationNumberProsecutor;
     @Column(name = "legal_qualification", nullable = false)
     private String legalQualification;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "crime_type_id")
     @ToString.Exclude
     private CrimeType crimeType;
