@@ -1,4 +1,4 @@
-package com.bogdanmierloiu.criminal_files_management.controller;
+package com.bogdanmierloiu.criminal_files_management.controller.rest;
 
 import com.bogdanmierloiu.criminal_files_management.dto.CrimeTypeRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.CrimeTypeResponse;

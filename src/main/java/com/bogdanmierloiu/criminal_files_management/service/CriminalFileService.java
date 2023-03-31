@@ -93,7 +93,6 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
         return authorList;
     }
 
-
     public void importFiles() {
         String filePath = "C:\\Users\\Andreea\\Desktop\\EvidentaAN.docx";
         try (FileInputStream inputStream = new FileInputStream(filePath);
@@ -121,6 +120,14 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<CriminalFileResponse> listWithUnknownAuthor() {
+        return criminalFileMapper.mapWithDetailsList(criminalFileRepository.findByAuthorsIsNullOrderByRegistrationDate());
+    }
+
+    public List<CriminalFileResponse> listWithKnownAuthor() {
+        return criminalFileMapper.mapWithDetailsList(criminalFileRepository.findByAuthorsIsNotNullOrderByRegistrationDateDesc());
     }
 
 

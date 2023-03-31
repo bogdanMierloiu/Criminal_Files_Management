@@ -40,16 +40,27 @@ public interface CriminalFileMapper {
     @Named("mapListCriminalFileToResponseWithDetails")
     default List<CriminalFileResponse> mapWithDetailsList(List<CriminalFile> criminalFileList) {
         List<CriminalFileResponse> criminalFileResponses = map(criminalFileList);
-        for (var i : criminalFileResponses) {
-            for (var k : criminalFileList) {
-                i.setCrimeTypeResponse(map(k.getCrimeType()));
-            }
-        }
-        for (var i : criminalFileResponses) {
-            for (var k : criminalFileList) {
-                i.setAuthorResponseList(mapAuthors(k.getAuthors()));
-            }
+        for (int i = 0; i < criminalFileList.size(); i++) {
+            CriminalFileResponse response = criminalFileResponses.get(i);
+            response.setCrimeTypeResponse(map(criminalFileList.get(i).getCrimeType()));
+            response.setAuthorResponseList(mapAuthors(criminalFileList.get(i).getAuthors()));
         }
         return criminalFileResponses;
     }
+
+//    @Named("mapListCriminalFileToResponseWithDetails")
+//    default List<CriminalFileResponse> mapWithDetailsList(List<CriminalFile> criminalFileList) {
+//        List<CriminalFileResponse> criminalFileResponses = map(criminalFileList);
+//        for (var i : criminalFileResponses) {
+//            for (var k : criminalFileList) {
+//                i.setCrimeTypeResponse(map(k.getCrimeType()));
+//            }
+//        }
+//        for (var i : criminalFileResponses) {
+//            for (var k : criminalFileList) {
+//                i.setAuthorResponseList(mapAuthors(k.getAuthors()));
+//            }
+//        }
+//        return criminalFileResponses;
+//    }
 }

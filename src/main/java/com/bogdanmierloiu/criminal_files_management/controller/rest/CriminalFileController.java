@@ -1,4 +1,4 @@
-package com.bogdanmierloiu.criminal_files_management.controller;
+package com.bogdanmierloiu.criminal_files_management.controller.rest;
 
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
@@ -50,5 +50,15 @@ public class CriminalFileController implements CrudController<CriminalFileReques
     public ResponseEntity<?> importFiles() {
         criminalFileService.importFiles();
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/unknown-author-list")
+    public ResponseEntity<List<CriminalFileResponse>> getAllWithUnknownAuthor() {
+        return new ResponseEntity<>(criminalFileService.listWithUnknownAuthor(), HttpStatus.OK);
+    }
+
+    @GetMapping("/known-author-list")
+    public ResponseEntity<List<CriminalFileResponse>> getAllWithKnownAuthor() {
+        return new ResponseEntity<>(criminalFileService.listWithKnownAuthor(), HttpStatus.OK);
     }
 }

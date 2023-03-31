@@ -1,4 +1,4 @@
-package com.bogdanmierloiu.criminal_files_management.controller;
+package com.bogdanmierloiu.criminal_files_management.controller.rest;
 
 import org.springframework.http.ResponseEntity;
 
