@@ -18,7 +18,13 @@ public class IndexController {
     private final AuthorService authorService;
 
     @GetMapping
-    public String goToIndexPage() {
+    public String goToIndexPage(Model model) {
+        model.addAttribute("nrOfFilesWithUnknownAuthor", criminalFileService.countUnknownAuthor());
+        model.addAttribute("nrOfFilesWithKnownAuthor", criminalFileService.countKnownAuthor());
+        model.addAttribute("activePage", "authors");
+        model.addAttribute("activePage", "criminalFilesAN");
+        model.addAttribute("activePage", "criminalFilesAC");
+
         return "index";
     }
 

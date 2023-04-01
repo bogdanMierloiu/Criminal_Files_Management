@@ -31,6 +31,15 @@ public class CriminalFile {
     private String registrationNumberProsecutor;
     @Column(name = "legal_qualification", nullable = false)
     private String legalQualification;
+    @Column(name = "resolved", nullable = false)
+    private boolean isResolved = false;
+
+    @Column(name = "resolution_date")
+    private LocalDate resolutionDate;
+
+    @Column(name = "solution_description")
+    private String solutionDescription;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "crime_type_id")
     @ToString.Exclude

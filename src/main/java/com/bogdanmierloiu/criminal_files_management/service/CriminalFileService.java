@@ -69,6 +69,11 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
         criminalFileToUpdate.setRegistrationDate(request.getRegistrationDate() != null ? request.getRegistrationDate() : criminalFileToUpdate.getRegistrationDate());
         criminalFileToUpdate.setRegistrationNumberProsecutor(request.getRegistrationNumberProsecutor() != null ? request.getRegistrationNumberProsecutor() : criminalFileToUpdate.getRegistrationNumberProsecutor());
         criminalFileToUpdate.setLegalQualification(request.getLegalQualification() != null ? request.getLegalQualification() : criminalFileToUpdate.getLegalQualification());
+        criminalFileToUpdate.setResolved(request.isResolved());
+        if(request.isResolved()){
+            criminalFileToUpdate.setResolutionDate(LocalDate.now());
+            criminalFileToUpdate.setSolutionDescription(request.getSolutionDescription() != null ? request.getSolutionDescription() : "nespecificat");
+        }
         criminalFileToUpdate.setCrimeType(request.getCrimeTypeId() != null ? crimeTypeRepository.findById(request.getCrimeTypeId())
                 .orElseThrow(() -> new NotFoundException("The crime type with id " + request.getCrimeTypeId() + " not found!")) : criminalFileToUpdate.getCrimeType());
         criminalFileToUpdate.setAuthors(request.getAuthorsId() != null ? createAuthorList(request.getAuthorsId()) : criminalFileToUpdate.getAuthors());
@@ -126,8 +131,16 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
         return criminalFileMapper.mapWithDetailsList(criminalFileRepository.findByAuthorsIsNullOrderByRegistrationDate());
     }
 
+    public Long countUnknownAuthor() {
+        return (long) listWithUnknownAuthor().size();
+    }
+
     public List<CriminalFileResponse> listWithKnownAuthor() {
         return criminalFileMapper.mapWithDetailsList(criminalFileRepository.findByAuthorsIsNotNullOrderByRegistrationDateDesc());
+    }
+
+    public Long countKnownAuthor() {
+        return (long) listWithKnownAuthor().size();
     }
 
 

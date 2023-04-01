@@ -13,3 +13,13 @@
     width: 50%; /* setează lățimea formularului */
     margin: 0 auto; /* setează marginul stânga și dreapta la "auto" pentru a centra formularul */
 }
+
+.navbar-nav a {
+    color: black;
+}
+
+.navbar-nav .selected {
+    color: gray;
+}
+
+

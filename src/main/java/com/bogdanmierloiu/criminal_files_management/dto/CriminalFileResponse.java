@@ -20,6 +20,9 @@ public class CriminalFileResponse {
     private LocalDate registrationDate;
     private String registrationNumberProsecutor;
     private String legalQualification;
+    private boolean isResolved;
+    private LocalDate resolutionDate;
+    private String solutionDescription;
     private CrimeTypeResponse crimeTypeResponse;
     private List<AuthorResponse> authorResponseList;
 
