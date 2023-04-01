@@ -27,7 +27,7 @@ public class AuthorService implements Crud<AuthorRequest, AuthorResponse> {
 
     @Override
     public List<AuthorResponse> getAll() {
-        return authorMapper.map(authorRepository.findAll());
+        return authorMapper.map(authorRepository.findAllOrderByLastNameAsc());
     }
 
     @Override
@@ -42,7 +42,6 @@ public class AuthorService implements Crud<AuthorRequest, AuthorResponse> {
                 () -> new NotFoundException("The author with id " + request.getId() + " not found"));
         authorToUpdate.setFirstName(request.getFirstName() != null ? request.getFirstName() : authorToUpdate.getFirstName());
         authorToUpdate.setLastName(request.getLastName() != null ? request.getLastName() : authorToUpdate.getLastName());
-        authorToUpdate.setMiddleName(request.getMiddleName() != null ? request.getMiddleName() : authorToUpdate.getMiddleName());
         authorToUpdate.setPersonalCode(request.getPersonalCode() != null ? request.getPersonalCode() : authorToUpdate.getPersonalCode());
         return authorMapper.map(authorToUpdate);
     }

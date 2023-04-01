@@ -38,41 +38,44 @@
         </form>
     </div>
 </nav>
+<div>
+    <form th:action="@{/author/goToAddAuthor}">
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Adauga</button>
+    </form>
+</div>
+
 <div class="table-responsive">
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Nr. inreg. Sectia 10 Politie</th>
-            <th>Data inregistrarii</th>
-            <th>Nr. inreg. PJS3</th>
-            <th>Incadrarea juridica</th>
-            <th>Tip de infractiune</th>
+            <th>Nume prenume</th>
+            <th>CNP</th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="criminalFile: ${criminalFilesAN}">
+        <tr th:each="author: ${authors}">
             <td>
-                <span th:text="${criminalFile.getRegistrationNumberPS()}"></span>
+                <span th:text="${author.getLastName() + ' ' + author.getFirstName()}"></span>
             </td>
             <td>
-                <span th:text="${#temporals.format(criminalFile.getRegistrationDate(), 'dd-MM-yyyy')}"></span>
+                <span th:text="${author.getPersonalCode()}"></span>
             </td>
             <td>
-                <span th:text="${criminalFile.getRegistrationNumberProsecutor()}"></span>
+                <form th:action="@{/author/deleteById/{id}(id=${author.id})}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="button"
+                            onclick="if(confirm('Sunteti sigur ca doriti sa stergeti aceasta intrare?')) {this.form.submit();}">
+                        Delete
+                    </button>
+                </form>
             </td>
             <td>
-                <span th:text="${criminalFile.getLegalQualification()}"></span>
-            </td>
-            <td>
-                <span th:text="${criminalFile.getCrimeTypeResponse() != null} ?
-                 ${criminalFile.crimeTypeResponse.type} : 'nespecificat'"></span>
-            </td>
-            <td>
-                <form th:action="@{/criminal-file/delete}">
-                    <input type="hidden" name="id" th:value="${criminalFile.id}">
-                    <button type="submit"> Delete</button>
+                <form th:action="@{/author/updateById/{id}(id=${author.id})}">
+                    <input type="hidden" name="_method" value="UPDATE">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Modifica</button>
                 </form>
             </td>
         </tr>

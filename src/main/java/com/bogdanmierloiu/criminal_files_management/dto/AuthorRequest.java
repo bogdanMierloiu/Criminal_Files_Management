@@ -11,7 +11,6 @@ public class AuthorRequest {
     private Long id;
     @NotBlank
     private String firstName;
-    private String middleName;
     @NotBlank
     private String lastName;
 

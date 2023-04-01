@@ -1,0 +1,15 @@
+@media (min-width: 400px) and (max-width: 600px) {
+    /* modificări de stil pentru tabel și butoane */
+    table {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 12px;
+    }
+}
+
+.add-form {
+    width: 50%; /* setează lățimea formularului */
+    margin: 0 auto; /* setează marginul stânga și dreapta la "auto" pentru a centra formularul */
+}

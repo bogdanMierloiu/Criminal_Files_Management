@@ -6,7 +6,6 @@ import lombok.Data;
 public class AuthorResponse {
     private Long id;
     private String firstName;
-    private String middleName;
     private String lastName;
     private String personalCode;
 

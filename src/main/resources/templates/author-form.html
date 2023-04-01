@@ -38,47 +38,25 @@
         </form>
     </div>
 </nav>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Nr. inreg. Sectia 10 Politie</th>
-            <th>Data inregistrarii</th>
-            <th>Nr. inreg. PJS3</th>
-            <th>Incadrarea juridica</th>
-            <th>Tip de infractiune</th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="criminalFile: ${criminalFilesAN}">
-            <td>
-                <span th:text="${criminalFile.getRegistrationNumberPS()}"></span>
-            </td>
-            <td>
-                <span th:text="${#temporals.format(criminalFile.getRegistrationDate(), 'dd-MM-yyyy')}"></span>
-            </td>
-            <td>
-                <span th:text="${criminalFile.getRegistrationNumberProsecutor()}"></span>
-            </td>
-            <td>
-                <span th:text="${criminalFile.getLegalQualification()}"></span>
-            </td>
-            <td>
-                <span th:text="${criminalFile.getCrimeTypeResponse() != null} ?
-                 ${criminalFile.crimeTypeResponse.type} : 'nespecificat'"></span>
-            </td>
-            <td>
-                <form th:action="@{/criminal-file/delete}">
-                    <input type="hidden" name="id" th:value="${criminalFile.id}">
-                    <button type="submit"> Delete</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<form class="add-form" th:action="@{/author/add-author}" method="post">
+    <div class="form-group">
+        <label>Nume de familie</label>
+        <input type="text" class="form-control" name="lastName" required>
+        <small class="form-text text-muted">Introduceti numele de familie</small>
+    </div>
+    <div class="form-group">
+        <label>Prenume</label>
+        <input type="text" class="form-control" name="firstName" required>
+        <small class="form-text text-muted">Puteti introduce mai multe prenume, daca este cazul</small>
+    </div>
+    <div class="form-group">
+        <label>CNP</label>
+        <input type="text" class="form-control" name="personalCode" pattern="^[0-9]*$" minlength="13" maxlength="13"
+               required>
+        <small class="form-text text-muted">Introduceti codul numeric personal</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Adauga</button>
+</form>
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

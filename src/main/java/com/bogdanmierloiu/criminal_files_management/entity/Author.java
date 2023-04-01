@@ -22,8 +22,6 @@ public class Author {
     private Long id;
     @Column(name = "firstName", nullable = false)
     private String firstName;
-    @Column(name = "middle_name")
-    private String middleName;
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
