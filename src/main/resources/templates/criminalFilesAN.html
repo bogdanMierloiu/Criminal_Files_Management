@@ -32,6 +32,9 @@
                 <a class="nav-link" th:href="@{/goToCrimeTypes}">Tipuri de infractiuni</a>
             </li>
         </ul>
+        <form th:action="@{/criminal-file/goToAddCriminalFile}" style="padding-right: 20px">
+            <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Adauga dosar</button>
+        </form>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Numar de inreg..." aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cauta</button>
@@ -52,7 +55,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="criminalFile: ${criminalFilesAN}">
+        <tr th:each="criminalFile: ${listWithUnknownAuthor}">
             <td>
                 <span th:text="${criminalFile.getRegistrationNumberPS()}"></span>
             </td>
@@ -67,12 +70,21 @@
             </td>
             <td>
                 <span th:text="${criminalFile.getCrimeTypeResponse() != null} ?
-                 ${criminalFile.crimeTypeResponse.type} : 'nespecificat'"></span>
+                 ${criminalFile.getCrimeTypeResponse().getType()} : 'nespecificat'"></span>
             </td>
             <td>
-                <form th:action="@{/criminal-file/delete}">
-                    <input type="hidden" name="id" th:value="${criminalFile.id}">
-                    <button type="submit"> Delete</button>
+                <form th:action="@{/criminal-file/deleteById/{id}(id=${criminalFile.getId()})}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="button"
+                            onclick="if(confirm('Sunteti sigur ca doriti sa stergeti aceasta intrare?')) {this.form.submit();}">
+                        Delete
+                    </button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/criminal-file/updateById/{id}(id=${criminalFile.id})}">
+                    <input type="hidden" name="_method" value="UPDATE">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Modifica</button>
                 </form>
             </td>
         </tr>

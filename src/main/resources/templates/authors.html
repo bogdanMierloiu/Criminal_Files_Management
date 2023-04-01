@@ -32,6 +32,9 @@
                 <a class="nav-link" th:href="@{/goToCrimeTypes}">Tipuri de infractiuni</a>
             </li>
         </ul>
+        <form th:action="@{/criminal-file/goToAddCriminalFile}" style="padding-right: 20px">
+            <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Adauga dosar</button>
+        </form>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Numar de inreg..." aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cauta</button>

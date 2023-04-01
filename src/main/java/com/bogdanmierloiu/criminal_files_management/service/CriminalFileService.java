@@ -68,7 +68,7 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
         );
         criminalFileToUpdate.setRegistrationNumberPS(request.getRegistrationNumberPS() != null ? request.getRegistrationNumberPS() : criminalFileToUpdate.getRegistrationNumberPS());
         criminalFileToUpdate.setRegistrationDate(request.getRegistrationDate() != null ? request.getRegistrationDate() : criminalFileToUpdate.getRegistrationDate());
-        criminalFileToUpdate.setRegistrationNumberProsecutor(request.getRegistrationNumberProsecutor() != null ? request.getRegistrationNumberProsecutor() : criminalFileToUpdate.getRegistrationNumberProsecutor());
+        criminalFileToUpdate.setRegistrationNumberProsecutor(request.getRegistrationNumberProsecutor() != null ? request.getRegistrationNumberProsecutor().toUpperCase() : criminalFileToUpdate.getRegistrationNumberProsecutor());
         criminalFileToUpdate.setLegalQualification(request.getLegalQualification() != null ? request.getLegalQualification() : criminalFileToUpdate.getLegalQualification());
         if (request.isResolved()) {
             criminalFileToUpdate.setResolved(true);

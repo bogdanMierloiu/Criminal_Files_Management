@@ -3,7 +3,9 @@ package com.bogdanmierloiu.criminal_files_management.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +23,10 @@ public class CriminalFileRequest {
 
     private Long id;
     @NotBlank
+    @Digits(integer = 10, message = "Registration number must be a 10-digit number", fraction = 0)
     private Long registrationNumberPS;
     @NotBlank
+    @PastOrPresent(message = "Registration date must be in the past or present")
     private LocalDate registrationDate;
     @NotBlank
     private String registrationNumberProsecutor;

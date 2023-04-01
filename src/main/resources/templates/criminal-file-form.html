@@ -41,11 +41,48 @@
         </form>
     </div>
 </nav>
-<form class="add-form" th:action="@{/crime-type/add-crime-type}" method="post">
+<form class="add-form" th:action="@{/criminal-file/add-criminal-file}" method="post">
     <div class="form-group">
-        <label>Tipul infractiunii</label>
-        <input type="text" class="form-control" name="type" required>
-        <small class="form-text text-muted">Introduceti tipul de infractiune</small>
+        <label>Nr. inreg. sectie</label>
+        <input type="text" class="form-control" name="registrationNumberPS" pattern="[0-9]+" required>
+        <small class="form-text text-muted">Introduceti numarul de inregistrare din cadrul Sectiei</small>
+    </div>
+    <div class="form-group">
+        <label>Data inregistrarii</label>
+        <input type="date" class="form-control" name="registrationDate" max="today" required>
+        <small class="form-text text-muted">Introduceti data inregistrarii in evidentele Sectiei</small>
+    </div>
+    <div class="form-group">
+        <label>Nr. inreg. Parchet</label>
+        <input type="text" class="form-control" name="registrationNumberProsecutor" required>
+        <small class="form-text text-muted">Introduceti numarul de inregistrare de la Parchet</small>
+    </div>
+    <div class="form-group">
+        <label>Incadrarea juridica</label>
+        <input type="text" class="form-control" name="legalQualification" required>
+        <small class="form-text text-muted">Introduceti incadrarea juridica a faptei</small>
+    </div>
+    <div class="form-group">
+        <label for="crimeTypeId">Tipul infractiunii</label>
+        <select class="form-control" id="crimeTypeId" name="crimeTypeId">
+            <option value="">Alegeti tipul</option>
+            <option th:each="crimeType : ${crimeTypesList}" th:value="${crimeType.id}"
+                    th:text="${crimeType.type}"></option>
+        </select>
+        <small class="form-text text-muted">Selectati tipul de infractiune din cele afisate in lista.
+            In cazul in care optiunea dumneavoastra nu se regaseste in lista si doriti sa o folositi, mergeti la
+            sectiunea Tipuri de infraciuni din bara de navigare si adaugati-o.</small>
+    </div>
+    <div class="form-group">
+        <label for="authorsId">Autori</label>
+        <select class="form-control multiple" id="authorsId" name="authorsId">
+            <option value="">Selectati autorii</option>
+            <option th:each="author : ${authorList}" th:value="${author.id}"
+                    th:text="${author.getLastName() + ' ' + author.getFirstName()}"></option>
+        </select>
+        <small class="form-text text-muted">Selectati unul sau mai multi autori din lista. Pentru a selecta mai multi,
+            tineti apasat butonul CTRL, in timpul selectiei. In cazul in care unul dintre autori, nu se regaseste in
+            lista si doriti sa il adaugati, mergeti la sectiunea Autori si adaugati-l.</small>
     </div>
     <button type="submit" class="btn btn-primary">Adauga</button>
 </form>

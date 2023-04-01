@@ -32,13 +32,13 @@ public class IndexController {
 
     @GetMapping("/goToCriminalFilesAN")
     public String goToCriminalFilesWithAN(Model model) {
-        model.addAttribute("criminalFilesAN", criminalFileService.listWithUnknownAuthor());
+        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthor());
         return "criminalFilesAN";
     }
 
     @GetMapping("/goToCriminalFilesAC")
     public String goToCriminalFilesWithAC(Model model) {
-        model.addAttribute("criminalFilesAC", criminalFileService.listWithKnownAuthor());
+        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthor());
         return "criminalFilesAC";
     }
 
