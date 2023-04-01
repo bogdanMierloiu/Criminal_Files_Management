@@ -2,6 +2,7 @@ package com.bogdanmierloiu.criminal_files_management.controller.rest;
 
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
+import com.bogdanmierloiu.criminal_files_management.exception.SolutionDescriptionException;
 import com.bogdanmierloiu.criminal_files_management.service.CriminalFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,11 @@ public class CriminalFileController implements CrudController<CriminalFileReques
     @Override
     @PutMapping
     public ResponseEntity<CriminalFileResponse> update(@RequestBody CriminalFileRequest request) {
-        return new ResponseEntity<>(criminalFileService.update(request), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(criminalFileService.update(request), HttpStatus.OK);
+        } catch (SolutionDescriptionException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @Override

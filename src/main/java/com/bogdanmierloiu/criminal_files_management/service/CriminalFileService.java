@@ -4,6 +4,7 @@ import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
 import com.bogdanmierloiu.criminal_files_management.entity.Author;
 import com.bogdanmierloiu.criminal_files_management.entity.CriminalFile;
+import com.bogdanmierloiu.criminal_files_management.exception.SolutionDescriptionException;
 import com.bogdanmierloiu.criminal_files_management.mapper.CriminalFileMapper;
 import com.bogdanmierloiu.criminal_files_management.repository.AuthorRepository;
 import com.bogdanmierloiu.criminal_files_management.repository.CrimeTypeRepository;
@@ -61,7 +62,7 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
     }
 
     @Override
-    public CriminalFileResponse update(CriminalFileRequest request) {
+    public CriminalFileResponse update(CriminalFileRequest request) throws SolutionDescriptionException {
         CriminalFile criminalFileToUpdate = criminalFileRepository.findById(request.getId()).orElseThrow(
                 () -> new NotFoundException("The criminal file with id " + request.getId() + " not found")
         );
@@ -69,10 +70,15 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
         criminalFileToUpdate.setRegistrationDate(request.getRegistrationDate() != null ? request.getRegistrationDate() : criminalFileToUpdate.getRegistrationDate());
         criminalFileToUpdate.setRegistrationNumberProsecutor(request.getRegistrationNumberProsecutor() != null ? request.getRegistrationNumberProsecutor() : criminalFileToUpdate.getRegistrationNumberProsecutor());
         criminalFileToUpdate.setLegalQualification(request.getLegalQualification() != null ? request.getLegalQualification() : criminalFileToUpdate.getLegalQualification());
-        criminalFileToUpdate.setResolved(request.isResolved());
-        if(request.isResolved()){
+        if (request.isResolved()) {
+            criminalFileToUpdate.setResolved(true);
             criminalFileToUpdate.setResolutionDate(LocalDate.now());
-            criminalFileToUpdate.setSolutionDescription(request.getSolutionDescription() != null ? request.getSolutionDescription() : "nespecificat");
+            criminalFileToUpdate.setSolutionDescription("nespecificat");
+        }
+        if (request.getSolutionDescription() != null && criminalFileToUpdate.isResolved()) {
+            criminalFileToUpdate.setSolutionDescription(request.getSolutionDescription());
+        } else if (!criminalFileToUpdate.isResolved()) {
+            throw new SolutionDescriptionException("Cannot set solution description on unresolved criminal file.");
         }
         criminalFileToUpdate.setCrimeType(request.getCrimeTypeId() != null ? crimeTypeRepository.findById(request.getCrimeTypeId())
                 .orElseThrow(() -> new NotFoundException("The crime type with id " + request.getCrimeTypeId() + " not found!")) : criminalFileToUpdate.getCrimeType());

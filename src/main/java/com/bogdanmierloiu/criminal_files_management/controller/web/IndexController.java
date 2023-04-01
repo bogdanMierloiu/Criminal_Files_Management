@@ -1,6 +1,7 @@
 package com.bogdanmierloiu.criminal_files_management.controller.web;
 
 import com.bogdanmierloiu.criminal_files_management.service.AuthorService;
+import com.bogdanmierloiu.criminal_files_management.service.CrimeTypeService;
 import com.bogdanmierloiu.criminal_files_management.service.CriminalFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ public class IndexController {
 
     private final CriminalFileService criminalFileService;
 
+    private final CrimeTypeService crimeTypeService;
     private final AuthorService authorService;
 
     @GetMapping
@@ -44,5 +46,11 @@ public class IndexController {
     public String goToAuthors(Model model) {
         model.addAttribute("authors", authorService.getAll());
         return "authors";
+    }
+
+    @GetMapping("/goToCrimeTypes")
+    public String goToCrimeTypes(Model model) {
+        model.addAttribute("crimeTypeList", crimeTypeService.getAll());
+        return "crime-types";
     }
 }

@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthorWebController {
     private final AuthorService authorService;
 
-    private final AuthorMapper authorMapper;
-
     @GetMapping("/goToAddAuthor")
     public String goToAddAuthor() {
         return "author-form";

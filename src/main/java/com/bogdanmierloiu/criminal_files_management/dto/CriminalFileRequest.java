@@ -1,6 +1,7 @@
 package com.bogdanmierloiu.criminal_files_management.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class CriminalFileRequest {
     @NotBlank
     private String registrationNumberProsecutor;
     private String legalQualification;
+    @JsonProperty
     private boolean isResolved = false;
     private LocalDate resolutionDate;
     private String solutionDescription;

@@ -32,7 +32,7 @@ public class CriminalFile {
     @Column(name = "legal_qualification", nullable = false)
     private String legalQualification;
     @Column(name = "resolved", nullable = false)
-    private boolean isResolved = false;
+    private boolean isResolved;
 
     @Column(name = "resolution_date")
     private LocalDate resolutionDate;
