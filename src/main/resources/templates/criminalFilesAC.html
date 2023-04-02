@@ -35,13 +35,18 @@
         <form th:action="@{/criminal-file/goToAddCriminalFile}" style="padding-right: 20px">
             <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Adauga dosar</button>
         </form>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Numar de inreg..." aria-label="Search">
+        <form class="form-inline my-2 my-lg-0"
+              th:action="@{/criminal-file/find-by-number}" method="get">
+            <input class="form-control mr-sm-2" type="search" placeholder="Numar de inreg..." aria-label="Search"
+                   name="searchTerm"/>
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cauta</button>
         </form>
     </div>
 </nav>
-<div class="table-responsive">
+<div th:if="${#lists.isEmpty(listWithKnownAuthor)}">
+    <h5>Nu aveti dosare cu autor cunoscut in lucru</h5>
+</div>
+<div th:if="${not #lists.isEmpty(listWithKnownAuthor)}" class="table-responsive">
     <table class="table table-hover">
         <thead>
         <tr>
@@ -60,7 +65,7 @@
                 <span th:text="${criminalFile.getRegistrationNumberPS()}"></span>
             </td>
             <td>
-                <span th:text="${criminalFile.getRegistrationDate()}"></span>
+                <span th:text="${#temporals.format(criminalFile.getRegistrationDate(), 'dd-MM-yyyy')}"></span>
             </td>
             <td>
                 <span th:text="${criminalFile.getRegistrationNumberProsecutor()}"></span>
@@ -96,7 +101,7 @@
             <td>
                 <form th:action="@{/criminal-file/resolveById/{id}(id=${criminalFile.id})}">
                     <input type="hidden" name="_method" value="UPDATE">
-                    <button class="btn btn-success my-2 my-sm-0" type="submit">Finalizeaza</button>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Finalizeaza</button>
                 </form>
             </td>
         </tr>

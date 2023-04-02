@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/criminal-file")
@@ -101,6 +103,14 @@ public class CriminalFileWebController {
         } else {
             return "criminalFilesAC";
         }
+    }
+
+    @GetMapping("/find-by-number")
+    public String findByNumber(@RequestParam("searchTerm") String searchTerm, Model model) {
+        Long longSearchTerm = Long.parseLong(searchTerm);
+        List<CriminalFileResponse> filesFound = criminalFileService.findByRegistrationNumber(longSearchTerm, searchTerm);
+        model.addAttribute("filesFound", filesFound);
+        return "criminalFilesFound";
     }
 
 }

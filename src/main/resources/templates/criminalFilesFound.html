@@ -43,33 +43,61 @@
         </form>
     </div>
 </nav>
-<div>
-    <form th:action="@{/author/goToAddAuthor}">
-        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Adauga</button>
-    </form>
+<div th:if="${#lists.isEmpty(filesFound)}">
+    <h5>Nu s-au gasit fisiere care sa corespunda criteriilor de cautare</h5>
 </div>
-
-<div class="table-responsive">
+<div th:if="${not #lists.isEmpty(filesFound)}" class="table-responsive">
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Nume prenume</th>
-            <th>CNP</th>
-            <th></th>
-            <th></th>
+            <th>Nr. inreg. Sectia 10 Politie</th>
+            <th>Data inregistrarii</th>
+            <th>Nr. inreg. PJS3</th>
+            <th>Incadrarea juridica</th>
+            <th>Stadiu</th>
+            <th>Data finalizarii</th>
+            <th>Solutia</th>
+            <th>Tip de infractiune</th>
+            <th>Autor/Autori</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="author: ${authors}">
+        <tr th:each="criminalFile: ${filesFound}">
             <td>
-                <span th:text="${author.getLastName() + ' ' + author.getFirstName()}"></span>
+                <span th:text="${criminalFile.getRegistrationNumberPS()}"></span>
             </td>
             <td>
-                <span th:text="${author.getPersonalCode()}"></span>
+                <span th:text="${criminalFile.getRegistrationDate()}"></span>
             </td>
             <td>
-                <form th:action="@{/author/deleteById/{id}(id=${author.id})}">
+                <span th:text="${criminalFile.getRegistrationNumberProsecutor()}"></span>
+            </td>
+            <td>
+                <span th:text="${criminalFile.getLegalQualification()}"></span>
+            </td>
+            <td>
+                <span th:text="${criminalFile.getIsResolved()} ? 'Finalizat' : 'In lucru'"></span>
+            </td>
+            <td>
+                <span th:text="${criminalFile.getIsResolved()} ?
+                 ${#temporals.format(criminalFile.getRegistrationDate(), 'dd-MM-yyyy')} : '---'"></span>
+            </td>
+            <td>
+                <span th:text="${criminalFile.getIsResolved()} ? ${criminalFile.getSolutionDescription()} : '---'"></span>
+            </td>
+            <td>
+                <span th:text="${criminalFile.getCrimeTypeResponse() != null} ?
+                 ${criminalFile.crimeTypeResponse.type} : 'nespecificat'"></span>
+            </td>
+            <td>
+                <ul th:each="author : ${criminalFile.getAuthorResponseList()}">
+                    <li th:text="${author.getLastName() + ' ' + author.getFirstName()}">
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <form th:action="@{/criminal-file/deleteById/{id}(id=${criminalFile.id})}">
                     <input type="hidden" name="_method" value="DELETE">
                     <button class="btn btn-outline-danger my-2 my-sm-0" type="button"
                             onclick="if(confirm('Sunteti sigur ca doriti sa stergeti aceasta intrare?')) {this.form.submit();}">
@@ -78,9 +106,15 @@
                 </form>
             </td>
             <td>
-                <form th:action="@{/author/updateById/{id}(id=${author.id})}">
+                <form th:action="@{/criminal-file/updateById/{id}(id=${criminalFile.id})}">
                     <input type="hidden" name="_method" value="UPDATE">
                     <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Modifica</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/criminal-file/resolveById/{id}(id=${criminalFile.id})}">
+                    <input type="hidden" name="_method" value="UPDATE">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Finalizeaza</button>
                 </form>
             </td>
         </tr>
