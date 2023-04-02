@@ -12,6 +12,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Mapper
@@ -27,7 +28,19 @@ public interface CriminalFileMapper {
 
     CrimeTypeResponse map(CrimeType crimeType);
 
-    List<AuthorResponse> mapAuthors(List<Author> authorList);
+    @Named("mapAuthorToResponse")
+    AuthorResponse map(Author author);
+
+    default List<AuthorResponse> mapAuthors(List<Author> authorList) {
+        if (authorList == null || authorList.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<AuthorResponse> authorResponseList = new ArrayList<>();
+        for (Author author : authorList) {
+            authorResponseList.add(map(author));
+        }
+        return authorResponseList;
+    }
 
     @Named("mapCriminalFileToResponseWithDetails")
     default CriminalFileResponse mapWithDetails(CriminalFile criminalFile) {
@@ -47,20 +60,4 @@ public interface CriminalFileMapper {
         }
         return criminalFileResponses;
     }
-
-//    @Named("mapListCriminalFileToResponseWithDetails")
-//    default List<CriminalFileResponse> mapWithDetailsList(List<CriminalFile> criminalFileList) {
-//        List<CriminalFileResponse> criminalFileResponses = map(criminalFileList);
-//        for (var i : criminalFileResponses) {
-//            for (var k : criminalFileList) {
-//                i.setCrimeTypeResponse(map(k.getCrimeType()));
-//            }
-//        }
-//        for (var i : criminalFileResponses) {
-//            for (var k : criminalFileList) {
-//                i.setAuthorResponseList(mapAuthors(k.getAuthors()));
-//            }
-//        }
-//        return criminalFileResponses;
-//    }
 }

@@ -1,6 +1,7 @@
 package com.bogdanmierloiu.criminal_files_management.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,9 @@ public class CriminalFile {
     private String registrationNumberProsecutor;
     @Column(name = "legal_qualification", nullable = false)
     private String legalQualification;
-    @Column(name = "resolved", nullable = false)
-    private boolean isResolved;
+    @Column(name = "is_resolved", nullable = false)
+    @JsonProperty
+    private Boolean isResolved;
 
     @Column(name = "resolution_date")
     private LocalDate resolutionDate;

@@ -62,6 +62,11 @@ public class CriminalFileController implements CrudController<CriminalFileReques
         return new ResponseEntity<>(criminalFileService.listWithUnknownAuthor(), HttpStatus.OK);
     }
 
+    @GetMapping("/unknown-author-in-progress")
+    public ResponseEntity<List<CriminalFileResponse>> getAllWithUnknownAuthorProgress() {
+        return new ResponseEntity<>(criminalFileService.listWithUnknownAuthorInProgress(), HttpStatus.OK);
+    }
+
     @GetMapping("/known-author-list")
     public ResponseEntity<List<CriminalFileResponse>> getAllWithKnownAuthor() {
         return new ResponseEntity<>(criminalFileService.listWithKnownAuthor(), HttpStatus.OK);

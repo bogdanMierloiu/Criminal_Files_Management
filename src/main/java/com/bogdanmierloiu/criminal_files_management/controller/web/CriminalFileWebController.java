@@ -1,9 +1,9 @@
 package com.bogdanmierloiu.criminal_files_management.controller.web;
 
-import com.bogdanmierloiu.criminal_files_management.dto.AuthorRequest;
-import com.bogdanmierloiu.criminal_files_management.dto.AuthorResponse;
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
+import com.bogdanmierloiu.criminal_files_management.entity.CriminalFile;
+import com.bogdanmierloiu.criminal_files_management.exception.SolutionDescriptionException;
 import com.bogdanmierloiu.criminal_files_management.service.AuthorService;
 import com.bogdanmierloiu.criminal_files_management.service.CrimeTypeService;
 import com.bogdanmierloiu.criminal_files_management.service.CriminalFileService;
@@ -31,8 +31,8 @@ public class CriminalFileWebController {
     @PostMapping("/add-criminal-file")
     public String addAuthor(@ModelAttribute CriminalFileRequest request, Model model) {
         CriminalFileResponse criminalFileResponse = criminalFileService.add(request);
-        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthor());
-        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthor());
+        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthorInProgress());
+        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthorInProgress());
         if (criminalFileResponse.getAuthorResponseList().isEmpty()) {
             return "criminalFilesAN";
         } else {
@@ -44,8 +44,8 @@ public class CriminalFileWebController {
     public String delete(@PathVariable Long id, Model model) {
         CriminalFileResponse criminalFileResponse = criminalFileService.findById(id);
         criminalFileService.delete(id);
-        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthor());
-        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthor());
+        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthorInProgress());
+        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthorInProgress());
         if (criminalFileResponse.getAuthorResponseList().isEmpty()) {
             return "criminalFilesAN";
         } else {
@@ -53,20 +53,54 @@ public class CriminalFileWebController {
         }
     }
 
-//    @GetMapping("/updateById/{id}")
-//    public String goToUpdateForm(@PathVariable Long id, Model model) {
-//        AuthorResponse author = authorService.findById(id);
-//        model.addAttribute("authorSelected", author);
-//        return "author-form-update";
-//    }
-//
-//    @PostMapping("/update-author")
-//    public String updateAuthor(@ModelAttribute AuthorResponse request, Model model) {
-//        AuthorRequest authorToUpdate = new AuthorRequest();
-//        BeanUtils.copyProperties(request, authorToUpdate);
-//        authorService.update(authorToUpdate);
-//        model.addAttribute("authors", authorService.getAll());
-//        return "authors";
-//    }
+    @GetMapping("/updateById/{id}")
+    public String goToUpdateForm(@PathVariable Long id, Model model) {
+        CriminalFileRequest criminalFileRequest = new CriminalFileRequest();
+        CriminalFile criminalFile = criminalFileService.findEntityById(id);
+        criminalFileRequest.setRegistrationNumberPS(criminalFile.getRegistrationNumberPS());
+        criminalFileRequest.setRegistrationDate(criminalFile.getRegistrationDate());
+        criminalFileRequest.setRegistrationNumberProsecutor(criminalFile.getRegistrationNumberProsecutor());
+        criminalFileRequest.setLegalQualification(criminalFile.getLegalQualification());
+        criminalFileRequest.setId(id);
+        model.addAttribute("criminalFileSelected", criminalFileRequest);
+        model.addAttribute("crimeTypesList", crimeTypeService.getAll());
+        model.addAttribute("authorsList", authorService.getAll());
+        return "criminal-file-form-update";
+    }
+
+    @PostMapping("/update-criminal-file")
+    public String updateCriminalFile(@ModelAttribute CriminalFileRequest request, Model model) throws SolutionDescriptionException {
+        CriminalFileResponse fileResponse = criminalFileService.update(request);
+        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthorInProgress());
+        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthorInProgress());
+        if (fileResponse.getAuthorResponseList().isEmpty()) {
+            return "criminalFilesAN";
+        } else {
+            return "criminalFilesAC";
+        }
+    }
+
+
+    @GetMapping("/resolveById/{id}")
+    public String goToResolveForm(@PathVariable Long id, Model model) {
+        CriminalFileResponse criminalFileResponse = criminalFileService.findById(id);
+        model.addAttribute("criminalFileSelected", criminalFileResponse);
+        return "criminal-file-form-resolve";
+    }
+
+    @PostMapping("/resolve")
+    public String updateAuthor(@ModelAttribute CriminalFileResponse request, Model model) throws SolutionDescriptionException {
+        CriminalFileRequest criminalFileToResolve = new CriminalFileRequest();
+        BeanUtils.copyProperties(request, criminalFileToResolve);
+        criminalFileToResolve.setIsResolved(true);
+        criminalFileService.update(criminalFileToResolve);
+        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthorInProgress());
+        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthorInProgress());
+        if (criminalFileToResolve.getAuthorsId().isEmpty()) {
+            return "criminalFilesAN";
+        } else {
+            return "criminalFilesAC";
+        }
+    }
 
 }

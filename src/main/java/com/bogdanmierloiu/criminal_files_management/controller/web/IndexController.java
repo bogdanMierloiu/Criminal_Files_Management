@@ -21,8 +21,8 @@ public class IndexController {
 
     @GetMapping
     public String goToIndexPage(Model model) {
-        model.addAttribute("nrOfFilesWithUnknownAuthor", criminalFileService.countUnknownAuthor());
-        model.addAttribute("nrOfFilesWithKnownAuthor", criminalFileService.countKnownAuthor());
+        model.addAttribute("nrOfFilesWithUnknownAuthor", criminalFileService.countUnknownAuthorInProgress());
+        model.addAttribute("nrOfFilesWithKnownAuthor", criminalFileService.countKnownAuthorInProgress());
         model.addAttribute("activePage", "authors");
         model.addAttribute("activePage", "criminalFilesAN");
         model.addAttribute("activePage", "criminalFilesAC");
@@ -32,13 +32,13 @@ public class IndexController {
 
     @GetMapping("/goToCriminalFilesAN")
     public String goToCriminalFilesWithAN(Model model) {
-        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthor());
+        model.addAttribute("listWithUnknownAuthor", criminalFileService.listWithUnknownAuthorInProgress());
         return "criminalFilesAN";
     }
 
     @GetMapping("/goToCriminalFilesAC")
     public String goToCriminalFilesWithAC(Model model) {
-        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthor());
+        model.addAttribute("listWithKnownAuthor", criminalFileService.listWithKnownAuthorInProgress());
         return "criminalFilesAC";
     }
 

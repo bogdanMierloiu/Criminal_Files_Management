@@ -44,12 +44,12 @@
 <form class="add-form" th:action="@{/author/add-author}" method="post">
     <div class="form-group">
         <label>Nume de familie</label>
-        <input type="text" class="form-control" name="lastName" required>
+        <input type="text" class="form-control" name="lastName" required pattern="[A-Za-z]+" title="Introduceti doar litere">
         <small class="form-text text-muted">Introduceti numele de familie</small>
     </div>
     <div class="form-group">
         <label>Prenume</label>
-        <input type="text" class="form-control" name="firstName" required>
+        <input type="text" class="form-control" name="firstName" required pattern="[A-Za-z\s]+" title="Introduceti doar litere">
         <small class="form-text text-muted">Puteti introduce mai multe prenume, daca este cazul</small>
     </div>
     <div class="form-group">

@@ -93,6 +93,12 @@
                     <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Modifica</button>
                 </form>
             </td>
+            <td>
+                <form th:action="@{/criminal-file/resolveById/{id}(id=${criminalFile.id})}">
+                    <input type="hidden" name="_method" value="UPDATE">
+                    <button class="btn btn-success my-2 my-sm-0" type="submit">Finalizeaza</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

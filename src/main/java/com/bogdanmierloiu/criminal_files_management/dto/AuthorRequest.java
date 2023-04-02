@@ -9,9 +9,11 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class AuthorRequest {
     private Long id;
-    @NotBlank
+    @NotBlank(message = "Last name cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Last name must contain only letters")
     private String firstName;
-    @NotBlank
+    @NotBlank(message = "Last name cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Last name must contain only letters")
     private String lastName;
 
     @Length(min = 13, max = 13, message = "The personal code must be exactly 13 characters")

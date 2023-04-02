@@ -41,62 +41,19 @@
         </form>
     </div>
 </nav>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Nr. inreg. Sectia 10 Politie</th>
-            <th>Data inregistrarii</th>
-            <th>Nr. inreg. PJS3</th>
-            <th>Incadrarea juridica</th>
-            <th>Tip de infractiune</th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="criminalFile: ${listWithUnknownAuthor}">
-            <td>
-                <span th:text="${criminalFile.getRegistrationNumberPS()}"></span>
-            </td>
-            <td>
-                <span th:text="${#temporals.format(criminalFile.getRegistrationDate(), 'dd-MM-yyyy')}"></span>
-            </td>
-            <td>
-                <span th:text="${criminalFile.getRegistrationNumberProsecutor()}"></span>
-            </td>
-            <td>
-                <span th:text="${criminalFile.getLegalQualification()}"></span>
-            </td>
-            <td>
-                <span th:text="${criminalFile.getCrimeTypeResponse() != null} ?
-                 ${criminalFile.getCrimeTypeResponse().getType()} : 'nespecificat'"></span>
-            </td>
-            <td>
-                <form th:action="@{/criminal-file/deleteById/{id}(id=${criminalFile.getId()})}">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button class="btn btn-outline-danger my-2 my-sm-0" type="button"
-                            onclick="if(confirm('Sunteti sigur ca doriti sa stergeti aceasta intrare?')) {this.form.submit();}">
-                        Delete
-                    </button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{/criminal-file/updateById/{id}(id=${criminalFile.id})}">
-                    <input type="hidden" name="_method" value="UPDATE">
-                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Modifica</button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{/criminal-file/resolveById/{id}(id=${criminalFile.id})}">
-                    <input type="hidden" name="_method" value="UPDATE">
-                    <button class="btn btn-success my-2 my-sm-0" type="submit">Finalizeaza</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+
+<form class="add-form" th:object="${criminalFileSelected}" th:action="@{/criminal-file/resolve}" method="post">
+    <input type="hidden" name="id" th:value="${criminalFileSelected.getId()}">
+    <div class="form-group">
+        <label>Solutia propusa</label>
+        <input type="text" class="form-control" th:field="*{solutionDescription}">
+        <small class="form-text text-muted">Daca doriti, puteti descrie pe scurt solutia propusa</small>
+    </div>
+    <button class="btn btn-outline-warning my-2 my-sm-0" type="button"
+            onclick="if(confirm('Sunteti sigur ca doriti sa modificati aceasta intrare?')) {this.form.submit();}">
+        Solutioneaza dosar
+    </button>
+</form>
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

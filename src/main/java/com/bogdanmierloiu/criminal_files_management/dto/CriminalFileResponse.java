@@ -1,10 +1,8 @@
 package com.bogdanmierloiu.criminal_files_management.dto;
 
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 public class CriminalFileResponse {
 
@@ -20,7 +19,8 @@ public class CriminalFileResponse {
     private LocalDate registrationDate;
     private String registrationNumberProsecutor;
     private String legalQualification;
-    private boolean isResolved;
+    @JsonProperty
+    private Boolean isResolved;
     private LocalDate resolutionDate;
     private String solutionDescription;
     private CrimeTypeResponse crimeTypeResponse;
