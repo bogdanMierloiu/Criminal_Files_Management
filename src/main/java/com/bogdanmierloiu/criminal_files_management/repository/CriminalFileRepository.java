@@ -24,13 +24,8 @@ public interface CriminalFileRepository extends JpaRepository<CriminalFile, Long
             "LEFT JOIN FETCH cf.authors a " +
             "LEFT JOIN FETCH cf.crimeType " +
             "WHERE cf.registrationNumberPS = :longSearchTerm " +
-            "OR cf.registrationNumberProsecutor LIKE %:stringSearchTerm% " +
-            "OR lower(a.firstName) LIKE lower(concat('%', :firstName, '%'))" +
-            "OR lower(a.lastName) LIKE lower(concat('%', :lastName, '%'))"
-    )
+            "OR cf.registrationNumberProsecutor LIKE %:stringSearchTerm% ")
     List<CriminalFile> findByRegistrationNumber(@Param("longSearchTerm") Long longSearchTerm,
-                                                  @Param("stringSearchTerm") String searchTerm,
-                                                @Param("firstName") String firstName,
-                                                @Param("lastName") String lastName);
+                                                @Param("stringSearchTerm") String stringSearchTerm);
 
 }

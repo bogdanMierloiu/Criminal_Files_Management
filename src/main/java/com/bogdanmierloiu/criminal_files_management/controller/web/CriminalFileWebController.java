@@ -107,22 +107,19 @@ public class CriminalFileWebController {
         }
     }
 
-    @GetMapping("/find-by-number")
+    @GetMapping("/find")
     public String findByNumber(@RequestParam("searchTerm") String searchTerm, Model model) {
-        Long longSearchTerm = null;
-        if (searchTerm != null) {
-            try {
-                longSearchTerm = Long.parseLong(searchTerm);
-            } catch (NumberFormatException e) {
-                longSearchTerm = 0L;
-            }
+        long longSearchTerm;
+        if (searchTerm.matches("\\d+")) {
+            longSearchTerm = Long.parseLong(searchTerm);
+            List<CriminalFileResponse> filesFound = criminalFileService.findByRegistrationNumber(longSearchTerm, searchTerm);
+            model.addAttribute("filesFound", filesFound);
+            return "criminalFilesFound";
+        } else {
+            List<AuthorResponse> authorsFound = authorService.findByName(searchTerm, searchTerm);
+            model.addAttribute("authorsFound", authorsFound);
+            return "authorsFound";
         }
-        List<CriminalFileResponse> filesFound = criminalFileService.findByRegistrationNumber(longSearchTerm, searchTerm, searchTerm, searchTerm);
-        List<AuthorResponse> authorResponseList = new ArrayList<>();
-
-
-        model.addAttribute("filesFound", filesFound);
-        return "criminalFilesFound";
     }
 
 }

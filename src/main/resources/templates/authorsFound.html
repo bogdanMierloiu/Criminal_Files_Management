@@ -44,26 +44,35 @@
     </div>
 </nav>
 <div>
-    <form th:action="@{/crime-type/goToAddCrimeType}">
-        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Adauga</button>
+    <form th:action="@{/author/goToAddAuthor}">
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Adauga autor</button>
     </form>
 </div>
+<div th:if="${#lists.isEmpty(authorsFound)}">
+    <h5>Nu s-au gasit fisiere care sa corespunda criteriilor de cautare</h5>
+</div>
+
 <div class="table-responsive">
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Tipul infractiunii</th>
+            <th>Nume prenume</th>
+            <th>CNP</th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="crimeType : ${crimeTypeList}">
+        <tr th:each="author: ${authorsFound}">
             <td>
-                <span th:text="${crimeType.getType()}"></span>
+                <span th:text="${author.getLastName() + ' ' + author.getFirstName()}"></span>
             </td>
             <td>
-                <form th:action="@{/crime-type/deleteById/{id}(id=${crimeType.id})}">
+                <span th:text="${author.getPersonalCode()}"></span>
+            </td>
+            <td>
+                <form th:action="@{/author/deleteById/{id}(id=${author.id})}">
                     <input type="hidden" name="_method" value="DELETE">
                     <button class="btn btn-outline-danger my-2 my-sm-0" type="button"
                             onclick="if(confirm('Sunteti sigur ca doriti sa stergeti aceasta intrare?')) {this.form.submit();}">
@@ -72,7 +81,7 @@
                 </form>
             </td>
             <td>
-                <form th:action="@{/crime-type/updateById/{id}(id=${crimeType.id})}">
+                <form th:action="@{/author/updateById/{id}(id=${author.id})}">
                     <input type="hidden" name="_method" value="UPDATE">
                     <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Modifica</button>
                 </form>

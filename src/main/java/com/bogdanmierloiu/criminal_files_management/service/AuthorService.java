@@ -53,4 +53,8 @@ public class AuthorService implements Crud<AuthorRequest, AuthorResponse> {
         );
         authorRepository.delete(authorToDelete);
     }
+
+    public List<AuthorResponse> findByName(String firstName, String lastName) {
+        return authorMapper.map(authorRepository.findByFirstNameAndLastName(firstName, lastName));
+    }
 }

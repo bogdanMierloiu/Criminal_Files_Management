@@ -36,15 +36,14 @@
             <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Adauga dosar</button>
         </form>
         <form class="form-inline my-2 my-lg-0"
-              th:action="@{/criminal-file/find-by-number}" method="get">
-            <input class="form-control mr-sm-2" type="search" placeholder="Numar de inreg..." aria-label="Search"
+              th:action="@{/criminal-file/find}" method="get">
+            <input class="form-control mr-sm-2" type="search" placeholder="Nr.de inreg./autor... " aria-label="Search"
                    name="searchTerm"/>
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cauta</button>
         </form>
     </div>
 </nav>
 <div th:if="${#lists.isEmpty(filesFound)}">
-
     <h5>Nu s-au gasit fisiere care sa corespunda criteriilor de cautare</h5>
 </div>
 <div th:if="${not #lists.isEmpty(filesFound)}" class="table-responsive">
