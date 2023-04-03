@@ -1,5 +1,6 @@
 package com.bogdanmierloiu.criminal_files_management.controller.web;
 
+import com.bogdanmierloiu.criminal_files_management.dto.AuthorResponse;
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
 import com.bogdanmierloiu.criminal_files_management.entity.CriminalFile;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -107,8 +109,18 @@ public class CriminalFileWebController {
 
     @GetMapping("/find-by-number")
     public String findByNumber(@RequestParam("searchTerm") String searchTerm, Model model) {
-        Long longSearchTerm = Long.parseLong(searchTerm);
-        List<CriminalFileResponse> filesFound = criminalFileService.findByRegistrationNumber(longSearchTerm, searchTerm);
+        Long longSearchTerm = null;
+        if (searchTerm != null) {
+            try {
+                longSearchTerm = Long.parseLong(searchTerm);
+            } catch (NumberFormatException e) {
+                longSearchTerm = 0L;
+            }
+        }
+        List<CriminalFileResponse> filesFound = criminalFileService.findByRegistrationNumber(longSearchTerm, searchTerm, searchTerm, searchTerm);
+        List<AuthorResponse> authorResponseList = new ArrayList<>();
+
+
         model.addAttribute("filesFound", filesFound);
         return "criminalFilesFound";
     }

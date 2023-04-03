@@ -44,6 +44,7 @@
     </div>
 </nav>
 <div th:if="${#lists.isEmpty(filesFound)}">
+
     <h5>Nu s-au gasit fisiere care sa corespunda criteriilor de cautare</h5>
 </div>
 <div th:if="${not #lists.isEmpty(filesFound)}" class="table-responsive">

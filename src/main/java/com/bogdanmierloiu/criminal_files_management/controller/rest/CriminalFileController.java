@@ -75,6 +75,6 @@ public class CriminalFileController implements CrudController<CriminalFileReques
     @GetMapping("/find-by-registration-number/{searchTerm}")
     public ResponseEntity<List<CriminalFileResponse>> findByRegistrationNumber(@PathVariable("searchTerm") String searchTerm) {
         Long longSearchTerm = Long.parseLong(searchTerm);
-        return new ResponseEntity<>(criminalFileService.findByRegistrationNumber(longSearchTerm, searchTerm), HttpStatus.OK);
+        return new ResponseEntity<>(criminalFileService.findByRegistrationNumber(longSearchTerm, searchTerm, searchTerm, searchTerm), HttpStatus.OK);
     }
 }

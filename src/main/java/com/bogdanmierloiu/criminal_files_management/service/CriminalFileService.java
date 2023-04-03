@@ -165,8 +165,8 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
     }
 
 
-    public List<CriminalFileResponse> findByRegistrationNumber(Long longSearchTerm, String stringSearchTerm) {
-        return criminalFileMapper.mapWithDetailsList(criminalFileRepository.findByRegistrationNumber(longSearchTerm, stringSearchTerm));
+    public List<CriminalFileResponse> findByRegistrationNumber(Long longSearchTerm, String stringSearchTerm, String firstName, String lastName) {
+        return criminalFileMapper.mapWithDetailsList(criminalFileRepository.findByRegistrationNumber(longSearchTerm, stringSearchTerm, firstName, lastName));
     }
 
 

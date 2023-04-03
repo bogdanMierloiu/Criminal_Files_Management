@@ -21,12 +21,16 @@ public interface CriminalFileRepository extends JpaRepository<CriminalFile, Long
     List<CriminalFile> findAllInProgressWithAuthorsOrderByRegistrationDate();
 
     @Query("SELECT DISTINCT cf FROM CriminalFile cf " +
-            "LEFT JOIN FETCH cf.authors " +
+            "LEFT JOIN FETCH cf.authors a " +
             "LEFT JOIN FETCH cf.crimeType " +
             "WHERE cf.registrationNumberPS = :longSearchTerm " +
-            "OR cf.registrationNumberProsecutor LIKE %:stringSearchTerm% "
+            "OR cf.registrationNumberProsecutor LIKE %:stringSearchTerm% " +
+            "OR lower(a.firstName) LIKE lower(concat('%', :firstName, '%'))" +
+            "OR lower(a.lastName) LIKE lower(concat('%', :lastName, '%'))"
     )
     List<CriminalFile> findByRegistrationNumber(@Param("longSearchTerm") Long longSearchTerm,
-                                                  @Param("stringSearchTerm") String searchTerm);
+                                                  @Param("stringSearchTerm") String searchTerm,
+                                                @Param("firstName") String firstName,
+                                                @Param("lastName") String lastName);
 
 }
