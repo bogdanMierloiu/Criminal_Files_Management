@@ -2,8 +2,7 @@ package com.bogdanmierloiu.criminal_files_management.controller.web;
 
 import com.bogdanmierloiu.criminal_files_management.dto.AuthorRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.AuthorResponse;
-import com.bogdanmierloiu.criminal_files_management.entity.Author;
-import com.bogdanmierloiu.criminal_files_management.mapper.AuthorMapper;
+import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
 import com.bogdanmierloiu.criminal_files_management.service.AuthorService;
 import com.bogdanmierloiu.criminal_files_management.service.CriminalFileService;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/author")
 public class AuthorWebController {
     private final AuthorService authorService;
+    private final CriminalFileService criminalFileService;
 
     @GetMapping("/goToAddAuthor")
     public String goToAddAuthor() {
@@ -50,6 +52,13 @@ public class AuthorWebController {
         authorService.update(authorToUpdate);
         model.addAttribute("authors", authorService.getAll());
         return "authors";
+    }
+
+    @GetMapping("/filesById/{id}")
+    public String filesById(@PathVariable Long id, Model model) {
+        List<CriminalFileResponse> filesForAuthor = criminalFileService.findByAuthorId(id);
+        model.addAttribute("listWithKnownAuthor", filesForAuthor);
+        return "criminalFilesAC";
     }
 
 }

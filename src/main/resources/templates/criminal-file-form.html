@@ -51,7 +51,7 @@
     </div>
     <div class="form-group">
         <label>Data inregistrarii</label>
-        <input type="date" class="form-control" name="registrationDate" max="today" required>
+        <input type="date" class="form-control" name="registrationDate" id="registrationDate" required>
         <small class="form-text text-muted">Introduceti data inregistrarii in evidentele Sectiei</small>
     </div>
     <div class="form-group">
@@ -90,6 +90,10 @@
 </form>
 
 
+<script>
+    let today = new Date().toISOString().split('T')[0];
+    document.getElementById('registrationDate').setAttribute('max', today);
+</script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

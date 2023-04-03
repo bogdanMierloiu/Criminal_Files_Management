@@ -44,7 +44,7 @@
     </div>
 </nav>
 <div th:if="${#lists.isEmpty(listWithUnknownAuthor)}">
-    <h5>Nu aveti dosare cu autor necunoscut in lucru</h5>
+    <h5>Nu exista inregistrari</h5>
 </div>
 <div th:if="${not #lists.isEmpty(listWithUnknownAuthor)}" class="table-responsive">
     <table class="table table-hover">

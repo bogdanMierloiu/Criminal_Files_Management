@@ -8,6 +8,7 @@ import com.bogdanmierloiu.criminal_files_management.exception.SolutionDescriptio
 import com.bogdanmierloiu.criminal_files_management.service.AuthorService;
 import com.bogdanmierloiu.criminal_files_management.service.CrimeTypeService;
 import com.bogdanmierloiu.criminal_files_management.service.CriminalFileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;

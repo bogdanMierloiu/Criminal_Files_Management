@@ -170,4 +170,9 @@ public class CriminalFileService implements Crud<CriminalFileRequest, CriminalFi
     }
 
 
+    public List<CriminalFileResponse> findByAuthorId(Long id) {
+        return criminalFileMapper.mapWithDetailsList(criminalFileRepository.findByAuthorId(id));
+    }
+
+
 }

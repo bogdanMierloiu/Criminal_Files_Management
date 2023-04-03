@@ -2,6 +2,7 @@ package com.bogdanmierloiu.criminal_files_management.service;
 
 import com.bogdanmierloiu.criminal_files_management.dto.AuthorRequest;
 import com.bogdanmierloiu.criminal_files_management.dto.AuthorResponse;
+import com.bogdanmierloiu.criminal_files_management.dto.CriminalFileResponse;
 import com.bogdanmierloiu.criminal_files_management.entity.Author;
 import com.bogdanmierloiu.criminal_files_management.mapper.AuthorMapper;
 import com.bogdanmierloiu.criminal_files_management.repository.AuthorRepository;
@@ -57,4 +58,6 @@ public class AuthorService implements Crud<AuthorRequest, AuthorResponse> {
     public List<AuthorResponse> findByName(String firstName, String lastName) {
         return authorMapper.map(authorRepository.findByFirstNameAndLastName(firstName, lastName));
     }
+
+
 }

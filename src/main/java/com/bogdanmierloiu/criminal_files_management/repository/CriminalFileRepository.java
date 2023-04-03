@@ -28,4 +28,13 @@ public interface CriminalFileRepository extends JpaRepository<CriminalFile, Long
     List<CriminalFile> findByRegistrationNumber(@Param("longSearchTerm") Long longSearchTerm,
                                                 @Param("stringSearchTerm") String stringSearchTerm);
 
+
+    @Query(
+            "SELECT DISTINCT cf FROM CriminalFile cf " +
+                    "LEFT JOIN FETCH cf.authors a " +
+                    "LEFT JOIN FETCH cf.crimeType " +
+                    "WHERE a.id = :id "
+    )
+    List<CriminalFile> findByAuthorId(@Param("id") Long id);
+
 }

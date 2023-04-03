@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     private final CriminalFileService criminalFileService;
-
     private final CrimeTypeService crimeTypeService;
     private final AuthorService authorService;
 
